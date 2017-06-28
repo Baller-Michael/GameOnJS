@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<meta name="viewport" content="width=device-width,user-scalable=no"/>
+	<title>Минимальный игровой код PointJS</title>
+</head>
+<body>
+<script type="text/javascript" src="point.js"></script>
+<script type="text/javascript">
+
+var pjs = new PointJS('2d', 400, 400);
+pjs.system.initFullPage();
+
+var vector = pjs.vector;    
+var log = pjs.system.log;
+var game = pjs.game;
+var point = vector.point;
+var size = vector.size;    
+var camera = pjs.camera;
+var brush = pjs.brush;
+var OOP = pjs.OOP;
+var height = game.getWH().h;
+var width = game.getWH().w;    
+    
+
+//var key = pjs.keyControl;
+//key.initKeyControl();
+
+//var mouse = pjs.mouseControl;
+//mouse.initMouseControl();
+
+var touch = pjs.touchControl;
+touch.initTouchControl();
+ 
+    
+    var fon1 = game.newImageObject({
+        x : 0, y : 0,
+        file : 'background3.png',
+        h : height,
+        onload : function(){
+        fon2.x = fon1.x+fon1.w;       
+    }
+    });
+    
+    
+    
+        var fon2 = game.newImageObject({
+        x : 0, y : 0,
+        file : 'background3.png',
+        h : height
+    });
+    
+  
+    
+     
+    var flor1 = game.newImageObject({
+        x : 0, y : 0,
+        file : 'dno.png',
+        w : width,
+        onload : function(){
+         flor2.y = flor1.y = height - flor1.h;   
+            flor2.x = flor1.x+flor1.w;
+        }
+    });
+    var flor2 = game.newImageObject({
+        x : 0, y : 0,
+        file : 'dno.png',
+        w : width
+    });
+         var snow1 = game.newImageObject({
+        x : 0, y : 0,
+        file : 'snow.png',
+        h : height,
+             onload : function(){
+           snow2.x = snow.x+snow.w; 
+             
+    });
+              var snow2 = game.newImageObject({
+        x : 0, y : 0,
+        file : 'snow.png',
+        h : height
+    });
+        
+  
+    var cat = game.newAnimationObject({
+        x : 0, y : 450,
+        h: 455, w : 279,
+        delay: 3, 
+       animation : pjs.tiles.newAnimation('cat.png', 279, 455, 7)
+    })
+    
+   
+    var  moveBackGround = function(s){
+    fon1.move(point(-s / 1.8, 0));
+    fon2.move(point(-s / 1.8, 0));    
+    flor1.move(point(-s, 0));
+    flor2.move(point(-s, 0));  
+    snow1.move(point(-s, 0)); 
+    snow2.move(point(-s, 0)); 
+    if (fon1.x+fon1.w < 0){
+        fon1.x = fon2.x+fon2.w;
+        }
+          if (fon2.x+fon2.w < 0){
+        fon2.x = fon1.x+fon1.w;
+        }
+            if (snow1.x+snow1.w < 0){
+        snow1.x = snow2.x+snow2.w;
+        }
+          if (snow2.x+snow2.w < 0){
+        snow2.x = snow1.x+snow1.w;
+        }
+        if (flor1.x+flor1.w < 0){
+        flor1.x = flor2.x+flor2.w;
+        }
+          if (flor2.x+flor2.w < 0){
+        flor2.x = flor1.x+flor1.w;
+        }
+    };
+    
+
+game.newLoop('game', function () {
+	game.fill('#D9D9D9');
+    
+    fon1.draw();
+    fon2.draw();
+    snow.draw();
+    flor1.draw();
+    flor2.draw();
+    
+   cat.y = flor1.y - cat.h/1.1;
+    cat.draw();
+    
+
+//	camera.move(point(2,0));
+   moveBackGround(7);
+
+
+});
+
+game.startLoop('game');
+
+</script>
+ <audio src="bells.mp3" autoplay="autoplay" loop="loop"></audio>
+<!-- <img src="1.gif">-->
+</body>
+</html>
